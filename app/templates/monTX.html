@@ -5,15 +5,14 @@
 {% block content %}
 {% set active = 'monTX' %}
 {% include "menu.html" %}
-<div id="toolbar">
-    <button id="refresh" class="btn btn-primary">Actualizar</button>
-</div>
 <div class="container-flex">
     <table id="table" 
     data-toggle="table" 
-    data-toolbar="#toolbar" 
 	data-search="true" 
     data-search-text="NOTOK" 
+    data-show-refresh="true"
+    data-auto-refresh="true"
+    data-buttons-class="primary"
     data-url="/api/v1.0/txStatus/">
         <thead>
             <tr>

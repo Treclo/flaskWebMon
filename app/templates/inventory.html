@@ -13,7 +13,6 @@
     <button id="notesOff" class="btn btn-primary">Ocultar notas</button>
     <button id="passwordOn" class="btn btn-primary">Mostrar password</button>
     <button id="passwordOff" class="btn btn-primary">Ocultar password</button>
-    <button id="refresh" class="btn btn-primary">Actualizar</button>
 </div>
 <div class="container-flex">
     <table id="table" 
@@ -24,7 +23,9 @@
     data-search="true" 
     data-sort-name="machine" 
     data-sort-order="asc" 
+    data-show-refresh="true"
     data-filter-control="true"
+    data-buttons-class="primary"
     data-url="/api/v1.0/inventory/">
         <thead>
             <tr>
@@ -113,7 +114,6 @@
     var $notesOff = $('#notesOff');
     var $passwordOn = $('#passwordOn');
     var $passwordOff = $('#passwordOff');
-    var $refresh = $('#refresh');
     
     $(document).ready(function() {
         var paginationParts = [];
@@ -154,9 +154,6 @@
         });
         $passwordOff.click(function () {
             $table.bootstrapTable('hideColumn', 'password');
-        });
-        $refresh.click(function () {
-            $table.bootstrapTable('refresh');
         });
     });
 

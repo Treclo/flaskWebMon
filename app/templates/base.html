@@ -12,6 +12,8 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename= 'bootstrap/css/bootstrap.min.css') }}">
 		<!-- Bootstrap-table CSS -->
 		<link rel="stylesheet" href="{{ url_for('static', filename= 'bootstrap-table/dist/bootstrap-table.min.css') }}">
+		<!-- Bootstrap-icons CSS -->
+		<link rel="stylesheet" href="{{ url_for('static', filename= 'bootstrap/icons/font/bootstrap-icons.min.css')}}">
 
 		<title>{% block title %} {% endblock %}</title>
 	</head>
@@ -24,6 +26,7 @@
 		<script src="{{ url_for('static', filename= 'bootstrap/js/bootstrap.min.js') }}"></script>
 		<script src="{{ url_for('static', filename= 'bootstrap-table/dist/bootstrap-table.min.js') }}"></script>
 		<script src="{{ url_for('static', filename= 'bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js') }}"></script>
+		<script src="{{ url_for('static', filename= 'bootstrap-table/dist/extensions/auto-refresh/bootstrap-table-auto-refresh.min.js')}}"></script>
 		<script src="{{ url_for('static', filename= 'axios/axios.min.js') }}"></script>
 		{% block personalJS %} {% endblock %}
 	</body>
