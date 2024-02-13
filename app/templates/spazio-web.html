@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventario{% endblock %}
+
+{% block content %}
+{% set active = 'spzWeb' %}
+{% include "menu.html" %}
+<div id="toolbar">
+    <button id="refresh" class="btn btn-primary">Actualizar</button>
+</div>
+<div class="container-flex">
+    <table id="table" 
+    data-toggle="table" 
+    data-toolbar="#toolbar" 
+    data-pagination="true" 
+	data-search="true" 
+    data-url="/api/v1.0/spz_web/">
+        <thead>
+            <tr>
+                <th data-sortable="true" data-field="matricula">Matrícula</th>
+                <th data-field="email">E-Mail</th>
+                <th data-field="ultimoAcceso">Fecha de último acceso</th>
+                <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">Opciones</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+{% endblock %}
+{% block personalJS %}
+<script>
+    var $table = $('#table');
+    var $refresh = $('#refresh');
+	var $paginationParts = []
+    
+    $(document).ready(function() {
+		var paginationParts = [];
+        paginationParts.push("pageList");
+		$table.bootstrapTable('refreshOptions', { paginationParts: paginationParts });
+    });
+
+    $(function() {
+        $refresh.click(function () {
+            $table.bootstrapTable('refresh');
+        })
+    });
+
+    function operateFormatter(value, row, index) {
+        return [
+            '<div class="btn-group" role="group" aria-label="Opciones">',
+                '<a class="keep btn btn-primary" href="javascript:void(0)" role="button">Prolongar</a>',
+            '</div>'
+        ].join('')
+    }
+
+    window.operateEvents = {
+        'click .keep': function (e, value, row, index) {
+            if (confirm('Se va a prolongar el acceso para: ' + row.matricula)) {
+                axios.put('/api/v1.0/spz_web/' + row.id);
+                $table.bootstrapTable('refresh');
+            }
+        }
+    }
+</script>
+{% endblock %}

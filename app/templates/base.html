@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<!-- Required meta tags -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+		
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="{{ url_for('static', filename= 'bootstrap/css/bootstrap.min.css') }}">
+		<!-- Bootstrap-table CSS -->
+		<link rel="stylesheet" href="{{ url_for('static', filename= 'bootstrap-table/dist/bootstrap-table.min.css') }}">
+
+		<title>{% block title %} {% endblock %}</title>
+	</head>
+	<body>
+		{% block content %} {% endblock %}
+
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Bootstrap JS, then Bootstrap-table JS-->
+		<script src="{{ url_for('static', filename= 'jquery/jquery-3.6.0.min.js') }}"></script>
+		<script src="{{ url_for('static', filename= 'bootstrap/js/bootstrap.min.js') }}"></script>
+		<script src="{{ url_for('static', filename= 'bootstrap-table/dist/bootstrap-table.min.js') }}"></script>
+		<script src="{{ url_for('static', filename= 'bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js') }}"></script>
+		<script src="{{ url_for('static', filename= 'axios/axios.min.js') }}"></script>
+		{% block personalJS %} {% endblock %}
+	</body>
+</html>

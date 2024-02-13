@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Monitorizacion TXSeries{% endblock %}
+
+{% block content %}
+{% set active = 'monTX' %}
+{% include "menu.html" %}
+<div id="toolbar">
+    <button id="refresh" class="btn btn-primary">Actualizar</button>
+</div>
+<div class="container-flex">
+    <table id="table" 
+    data-toggle="table" 
+    data-toolbar="#toolbar" 
+	data-search="true" 
+    data-search-text="NOTOK" 
+    data-url="/api/v1.0/txStatus/">
+        <thead>
+            <tr>
+                <th data-sortable="true" data-field="machine">Máquina</th>
+                <th data-field="resource">Recurso</th>
+                <th data-field="status">Estado</th>
+                <th data-field="dangerLevel">Criticidad</th>
+                <th data-field="problemGroup">Grupo problema</th>
+                <th data-field="date">Fecha problema</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+{% endblock %}
+{% block personalJS %}
+<script>
+    var $table = $('#table');
+    var $refresh = $('#refresh');
+	var $paginationParts = []
+    
+    $(document).ready(function() {
+		var paginationParts = [];
+        paginationParts.push("pageList");
+		$table.bootstrapTable('refreshOptions', { paginationParts: paginationParts });
+    });
+
+    $(function() {
+        $refresh.click(function () {
+            $table.bootstrapTable('refresh');
+        })
+    });
+</script>
+{% endblock %}

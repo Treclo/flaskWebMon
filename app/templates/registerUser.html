@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar usuario{% endblock %}
+
+{% block content %}
+{% include "menu.html" %}
+<div class="container-flex">
+    <form class="row g-3" action="/register_user" method="post">
+        <div class="col-6">
+            <input class="form-control me-2" type="text" placeholder="Nombre" aria-label="Nombre" name="user">
+        </div>
+        <div class="col-6">
+            <input class="form-control me-2" type="password" placeholder="Password" aria-label="Password" name="password">
+        </div>
+        <div class="col-12">
+            <select class="form-select" aria-label="Seleccion por nombre" name="isAdmin">
+                <option selected value="0">No es ADMIN</option>
+                <option value="1">Si es ADMIN</option>
+            </select>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Aceptar</button>
+            <button class="btn btn-danger" type="reset">Reset</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

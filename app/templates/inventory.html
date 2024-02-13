@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %}Inventario{% endblock %}
+
+{% block content %}
+{% set active = 'inventory' %}
+{% include "menu.html" %}
+<div id="toolbar">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addItem">
+        Añadir
+    </button>
+    <button id="notesOn" class="btn btn-primary">Mostrar notas</button>
+    <button id="notesOff" class="btn btn-primary">Ocultar notas</button>
+    <button id="passwordOn" class="btn btn-primary">Mostrar password</button>
+    <button id="passwordOff" class="btn btn-primary">Ocultar password</button>
+    <button id="refresh" class="btn btn-primary">Actualizar</button>
+</div>
+<div class="container-flex">
+    <table id="table" 
+    data-toggle="table" 
+    data-toolbar="#toolbar" 
+    data-pagination="true" 
+    data-page-size="25"
+    data-search="true" 
+    data-sort-name="machine" 
+    data-sort-order="asc" 
+    data-filter-control="true"
+    data-url="/api/v1.0/inventory/">
+        <thead>
+            <tr>
+                <th data-sortable="true" data-field="machine">Máquina</th>
+                <th data-field="technology" data-filter-control="select">Tecnología</th>
+                <th data-field="version">Versión</th>
+                <th data-field="environment" data-filter-control="select">Entorno</th>
+                <th data-field="scope">Ámbito</th>
+                <th data-field="system">Sistema</th>
+                <th data-field="architecture">Arquitectura</th>
+                <th data-field="resources">Recursos</th>
+                <th data-field="app">Aplicación</th>
+                <th data-field="ports">Puertos</th>
+                <th data-field="user">Usuario</th>
+                <th data-field="password">Password</th>
+                <th data-field="notes">Notas</th>
+                <th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">Opciones</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+<div class="modal fade" id="addItem" tabindex="-1" aria-labelledby="addItemLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addItemLabel">Añadir</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" id="addItemForm">
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="machine" placeholder="Maquina" value="" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="technology" placeholder="Tecnologia" value="" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="version" placeholder="Version" value="">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="environment" placeholder="Entorno" value="" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="scope" placeholder="Ambito" value="" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="system" placeholder="Sistema operativo" value="" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="architecture" placeholder="Arquitectura" value="" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="resources" placeholder="Recursos" value="" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="app" placeholder="Aplicacion" value="">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="ports" placeholder="Puertos" value="">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="user" placeholder="Usuario" value="">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="password" placeholder="Password" value="">
+                        </div>
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" id="notes" placeholder="Notas" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" id="addItem" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block personalJS %}
+<script>
+    var $table = $('#table');
+    var $notesOn = $('#notesOn');
+    var $notesOff = $('#notesOff');
+    var $passwordOn = $('#passwordOn');
+    var $passwordOff = $('#passwordOff');
+    var $refresh = $('#refresh');
+    
+    $(document).ready(function() {
+        var paginationParts = [];
+        $table.bootstrapTable('hideColumn', 'notes');
+        $table.bootstrapTable('hideColumn', 'password');
+        paginationParts.push("pageList");
+		$table.bootstrapTable('refreshOptions', { paginationParts: paginationParts });
+        $(document).on('submit', '#addItemForm', function() {
+            axios.post('/api/v1.0/inventory/', {
+    		    machine: $( "#machine" ).val(),
+    		    technology: $( "#technology" ).val(),
+			    version: $( "#version" ).val(),
+                environment: $( "#environment" ).val(),
+                scope: $( "#scope" ).val(),
+                system: $( "#system" ).val(),
+                architecture: $( "#architecture" ).val(),
+                resources: $( "#resources" ).val(),
+                app: $( "#app" ).val(),
+                ports: $( "#ports" ).val(),
+                user: $( "#user" ).val(),
+                password: $( "#password" ).val(),
+                notes: $( "#notes" ).val()
+  		    });
+            $('#addItem').modal('toggle');
+            alert("Se ha añadido la pareja: " + $( "#machine" ).val() + "-" + $( "#technology" ).val());
+        });
+    });
+
+    $(function() {
+        $notesOn.click(function () {
+            $table.bootstrapTable('showColumn', 'notes');
+        });
+        $notesOff.click(function () {
+            $table.bootstrapTable('hideColumn', 'notes');
+        });
+        $passwordOn.click(function () {
+            $table.bootstrapTable('showColumn', 'password');
+        });
+        $passwordOff.click(function () {
+            $table.bootstrapTable('hideColumn', 'password');
+        });
+        $refresh.click(function () {
+            $table.bootstrapTable('refresh');
+        });
+    });
+
+    function operateFormatter(value, row, index) {
+        return [
+            '<div class="btn-group" role="group" aria-label="Opciones">',
+                '<a class="edit btn btn-primary" href="/editItem?id=' + row.id + '" role="button">Editar</a>',
+                '<a class="remove btn btn-primary" href="javascript:void(0)" role="button">Borrar</a>',
+            '</div>'
+        ].join('')
+    };
+
+    window.operateEvents = {
+        'click .remove': function (e, value, row, index) {
+            if (confirm('Confirma que quieres borrar-> maquina: ' + row.machine + ' tecnologia: ' + row.technology)) {
+                axios.delete('/api/v1.0/inventory/' + row.id);
+                $table.bootstrapTable('remove', {
+                    field: 'id',
+                    values: [row.id]
+                });
+            }
+        }
+    };
+</script>
+{% endblock %}

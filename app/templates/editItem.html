@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Item{% endblock %}
+
+{% block content %}
+{% set active = 'inventory' %}
+{% include "menu.html" %}
+<div class="container-flex">
+	<form class="row g-3" id="mod">
+		<div class="mb-3">
+			<label for="form-select" class="form-label">Selecciona lo que deseas modificar</label>
+			<select class="form-select" id="selectMod" aria-label="Select de info a modificar">
+				<option value="version" selected>Versión</option>
+				<option value="system">Sistema operativo</option>
+				<option value="architecture">Arquitectura</option>
+				<option value="resources">Recursos</option>
+				<option value="app">Aplicación</option>
+				<option value="ports">Puertos</option>
+				<option value="user">Usuario</option>
+				<option value="password">Password</option>
+				<option value="notes">Notas</option>
+			</select>
+		</div>
+		<div class="mb-3">
+			<label for="formGroupExampleInput2" class="form-label">Nuevo valor</label>
+			<input type="text" id="textMod" class="form-control" value="">
+		</div>
+		<div class="mb-3">
+			<button type="submit" class="btn btn-primary">Modificar</button>
+		</div>
+	</form>
+</div>
+{% endblock %}
+{% block personalJS %}
+<script>
+	var url = new URL(window.location.href)
+	var id = url.searchParams.get("id");
+	var json;
+
+	$(document).ready(function() {
+		axios.get('/api/v1.0/inventory/' + id)
+		.then(function (response) {
+			json = response['data'];
+			$("#textMod").attr("value", json['version']);
+		})
+	});
+
+	$('#selectMod').change(function(){
+    	$("#textMod").attr("value", json[$(this).val()]);
+	});
+
+	$( "#mod" ).submit(function( event ) {
+		axios.put('/api/v1.0/inventory/' + id, {
+    		mod: $( "#selectMod" ).val(),
+    		data: $( "#textMod" ).val()
+  		});
+		alert("Se ha modificado " + $( "#selectMod" ).val() + " de la pareja: " + json['machine'] + "-" + json['technology'] + " a " + $( "#textMod" ).val());
+		event.preventDefault();
+});
+</script>
+{% endblock %}
