@@ -18,19 +18,19 @@ class InventoryListResource(Resource):
 	def post(self):
 		data = request.get_json()
 		inventory_dict = inventorySchema.load(data)
-		inventoryItem = Inventory(machine = inventory_dict['machine'],
-									technology = inventory_dict['technology'],
-									version = inventory_dict['version'],
-									environment = inventory_dict['environment'],
-									scope = inventory_dict['scope'],
-									system = inventory_dict['system'],
-									architecture = inventory_dict['architecture'],
-									resources = inventory_dict['resources'],
-									app = inventory_dict['app'],
-									ports = inventory_dict['ports'],
-									user = inventory_dict['user'],
-									password = inventory_dict['password'],
-									notes = inventory_dict['notes']
+		inventoryItem = Inventory(machine = inventory_dict[0]['machine'],
+									technology = inventory_dict[0]['technology'],
+									version = inventory_dict[0]['version'],
+									environment = inventory_dict[0]['environment'],
+									scope = inventory_dict[0]['scope'],
+									system = inventory_dict[0]['system'],
+									architecture = inventory_dict[0]['architecture'],
+									resources = inventory_dict[0]['resources'],
+									app = inventory_dict[0]['app'],
+									ports = inventory_dict[0]['ports'],
+									user = inventory_dict[0]['user'],
+									password = inventory_dict[0]['password'],
+									notes = inventory_dict[0]['notes']
 		)
 		inventoryItem.save()
 		resp = inventorySchema.dump(inventoryItem)
